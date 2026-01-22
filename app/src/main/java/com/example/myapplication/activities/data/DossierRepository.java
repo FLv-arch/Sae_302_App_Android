@@ -59,5 +59,9 @@ public class DossierRepository {
 
         return dossiers;
     }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> 2fa1fc4 (MAJ)

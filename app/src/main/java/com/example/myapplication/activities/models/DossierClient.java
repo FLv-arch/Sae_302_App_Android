@@ -4,7 +4,6 @@ import java.util.List;
 
 
 import java.io.Serializable;
-import java.util.List;
 
 public class DossierClient implements Serializable {
 
@@ -14,7 +13,7 @@ public class DossierClient implements Serializable {
     private StatutDossier statut;
     private List<String> logs;
 
-    public DossierClient(String reference, String client, String description, StatutDossier statut, List<String> logs) {
+    public DossierClient(String reference, String client, String description, StatutDossier statut) {
         this.reference = reference;
         this.client = client;
         this.description = description;
