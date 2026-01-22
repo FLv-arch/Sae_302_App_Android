@@ -14,6 +14,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
 public class DossierRepository {
 
     public static List<DossierClient> load(Context context) {
@@ -46,8 +49,7 @@ public class DossierRepository {
                         obj.getString("reference"),
                         obj.getString("client"),
                         obj.getString("description"),
-                        StatutDossier.valueOf(obj.getString("statut")),
-                        logs
+                        StatutDossier.valueOf(obj.getString("statut"))
                 ));
             }
 
