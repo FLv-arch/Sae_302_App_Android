@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Référence -->
+        <TextView
+            android:id="@+id/textRef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20265126"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@android:color/black" />
+
+        <!-- Client -->
+        <TextView
+            android:id="@+id/textClient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entreprise ABC"
+            android:layout_marginTop="4dp"
+            android:textColor="@android:color/darker_gray" />
+
+        <!-- Statut -->
+        <TextView
+            android:id="@+id/textStatut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EN COURS"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_dark" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
