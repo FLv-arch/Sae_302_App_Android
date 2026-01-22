@@ -1,11 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="À venir" />
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@android:color/black">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Titre -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Workflow du dossier"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="32dp" />
+
+        <!-- ÉTAT : À TRAITER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <View
+                android:id="@+id/stateATraiter"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/state_circle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="À traiter"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="7dp"
+            android:background="@android:color/darker_gray" />
+
+        <!-- ÉTAT : EN COURS -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <View
+                android:id="@+id/stateEnCours"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/state_circle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="En cours"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="7dp"
+            android:background="@android:color/darker_gray" />
+
+        <!-- ÉTAT : TERMINÉ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <View
+                android:id="@+id/stateTermine"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/state_circle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Terminé"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <!-- Séparateur -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="32dp"
+            android:background="@android:color/darker_gray" />
+
+        <!-- Boutons d'action -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnATraiter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Passer à À traiter"
+            android:textAllCaps="false"
+            android:layout_marginBottom="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEnCours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Passer à En cours"
+            android:textAllCaps="false"
+            android:layout_marginBottom="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTermine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Passer à Terminé"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</ScrollView>
