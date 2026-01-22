@@ -20,6 +20,7 @@ import android.view.MenuItem;
 
 import android.widget.Button;
 
+import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,12 +29,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnAccessDossier = findViewById(R.id.btnAccessDossier);
+        MaterialButton btn = findViewById(R.id.btnAccesDossiers);
 
-        btnAccessDossier.setOnClickListener(v -> {
-            Intent intent= new Intent(MainActivity.this, DossierListActivity.class);
-            startActivity(new Intent(this, DossierListActivity.class));
-
-        });
+        btn.setOnClickListener(v ->
+                startActivity(new Intent(this, DossierListActivity.class))
+        );
     }
 }
+

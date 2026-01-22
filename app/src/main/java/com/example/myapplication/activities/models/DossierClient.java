@@ -1,36 +1,36 @@
 package com.example.myapplication.activities.models;
 
-public class DossierClient {
+import java.util.List;
+
+
+import java.io.Serializable;
+import java.util.List;
+
+public class DossierClient implements Serializable {
 
     private String reference;
-    private String description;
     private String client;
+    private String description;
     private StatutDossier statut;
+    private List<String> logs;
 
-    public DossierClient(String reference, String description, String client, StatutDossier statut) {
+    public DossierClient(String reference, String client, String description, StatutDossier statut, List<String> logs) {
         this.reference = reference;
-        this.description = description;
         this.client = client;
+        this.description = description;
         this.statut = statut;
+        this.logs = logs;
     }
 
-    public String getReference() {
-        return reference;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getClient() {
-        return client;
-    }
-
-    public StatutDossier getStatut() {
-        return statut;
-    }
+    public String getReference() { return reference; }
+    public String getClient() { return client; }
+    public String getDescription() { return description; }
+    public StatutDossier getStatut() { return statut; }
+    public List<String> getLogs() { return logs; }
 
     public void setStatut(StatutDossier statut) {
         this.statut = statut;
+        logs.add("Statut modifié → " + statut.name());
     }
 }
+
