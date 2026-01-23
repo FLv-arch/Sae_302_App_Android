@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background_app"
+        android:scaleType="centerCrop" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#1A000000" /> <ScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/orange">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,53 +25,53 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Référence du dossier -->
         <TextView
             android:id="@+id/textReference"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dossier #20265126"
-            android:textSize="22sp"
+            android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp" />
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="4dp" />
 
-        <!-- Client -->
         <TextView
             android:id="@+id/textClient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Entreprise ABC"
-            android:textSize="16sp"
-            android:textColor="@color/bluev2"
-            android:layout_marginBottom="16dp" />
+            android:textSize="18sp"
+            android:textColor="#E0E0E0"
+            android:layout_marginBottom="24dp" />
 
-        <!-- Statut -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:layout_marginBottom="24dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginBottom="32dp">
 
             <TextView
                 android:id="@+id/textStatut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="EN COURS"
-                android:padding="12dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/blue" />
-        </com.google.android.material.card.MaterialCardView>
+                android:textColor="#1A237E" /> </com.google.android.material.card.MaterialCardView>
 
-        <!-- Description -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Description"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:letterSpacing="0.1"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -66,16 +79,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Installation de la fibre optique dans les locaux."
-            android:textColor="@color/bluev2"
+            android:textColor="#F5F5F5"
+            android:textSize="16sp"
             android:layout_marginBottom="24dp" />
 
-        <!-- Historique / notes -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Historique / Notes"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:letterSpacing="0.1"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -83,21 +99,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="- Dossier créé\n- Technicien assigné\n- Intervention planifiée"
-            android:textColor="@color/bluev2"
-            android:layout_marginBottom="32dp" />
+            android:textColor="#F5F5F5"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="40dp" />
 
-        <!-- Bouton workflow -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnWorkflow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Gérer le workflow"
             android:textAllCaps="false"
-            android:padding="14dp"
-            app:cornerRadius="16dp"
-            app:backgroundTint="@color/blue"
-            />
-
-    </LinearLayout>
-
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1A237E"
+            app:cornerRadius="24dp"
+            app:backgroundTint="#FFCC99" /> </LinearLayout>
 </ScrollView>
+</FrameLayout>
