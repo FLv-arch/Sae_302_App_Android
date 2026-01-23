@@ -1,8 +1,7 @@
 package com.example.myapplication.activities.models;
 
+import java.util.ArrayList;
 import java.util.List;
-
-
 import java.io.Serializable;
 
 public class DossierClient implements Serializable {
@@ -18,7 +17,8 @@ public class DossierClient implements Serializable {
         this.client = client;
         this.description = description;
         this.statut = statut;
-        this.logs = logs;
+        this.logs = new ArrayList<>();
+        this.logs.add("Dossier créé - Statut initial : " + statut.name());
     }
 
     public String getReference() { return reference; }
@@ -29,7 +29,7 @@ public class DossierClient implements Serializable {
 
     public void setStatut(StatutDossier statut) {
         this.statut = statut;
+        if (logs == null) logs = new ArrayList<>();
         logs.add("Statut modifié → " + statut.name());
     }
 }
-
