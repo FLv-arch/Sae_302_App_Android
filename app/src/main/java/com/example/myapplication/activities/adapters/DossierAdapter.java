@@ -1,5 +1,6 @@
 package com.example.myapplication.activities.adapters;
 
+import android.graphics.Color;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,26 @@ public class DossierAdapter extends RecyclerView.Adapter<DossierAdapter.ViewHold
         DossierClient dossier = dossiers.get(position);
         holder.ref.setText(dossier.getReference());
         holder.client.setText(dossier.getClient());
+
+        // MISE À JOUR DE L'ÉTAT DANS LA LISTE
+        if (dossier.getStatut() != null) {
+            String statutTxt = dossier.getStatut().name().replace("_", " ");
+            holder.statut.setText(statutTxt);
+
+            // Petit bonus : changer la couleur selon le statut
+            switch (dossier.getStatut()) {
+                case A_TRAITER:
+                    holder.statut.setTextColor(Color.parseColor("#757575")); // Gris
+                    break;
+                case EN_COURS:
+                    holder.statut.setTextColor(Color.parseColor("#1976D2")); // Bleu
+                    break;
+                case TERMINE:
+                    holder.statut.setTextColor(Color.parseColor("#388E3C")); // Vert
+                    break;
+            }
+        }
+
         holder.itemView.setOnClickListener(v -> listener.onClick(dossier));
     }
 
@@ -50,13 +71,13 @@ public class DossierAdapter extends RecyclerView.Adapter<DossierAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView ref, client;
+        TextView ref, client, statut;
 
         ViewHolder(View itemView) {
             super(itemView);
             ref = itemView.findViewById(R.id.textRef);
             client = itemView.findViewById(R.id.textClient);
+            statut = itemView.findViewById(R.id.textStatut);
         }
     }
 }
-
