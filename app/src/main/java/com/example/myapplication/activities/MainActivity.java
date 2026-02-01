@@ -19,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Mise à jour de la date et l'heure
         TextView textDateTime = findViewById(R.id.textDateTime);
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE d MMMM yyyy - HH:mm", Locale.FRANCE);
         String currentDateAndTime = sdf.format(new Date());

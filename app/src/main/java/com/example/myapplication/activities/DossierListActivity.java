@@ -12,6 +12,8 @@ import com.example.myapplication.activities.adapters.DossierAdapter;
 import com.example.myapplication.activities.data.DossierRepository;
 import com.example.myapplication.activities.models.DossierClient;
 
+
+
 import java.util.List;
 
 public class DossierListActivity extends AppCompatActivity {
@@ -27,21 +29,25 @@ public class DossierListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerDossiers);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+        com.google.android.material.button.MaterialButton btnAdd = findViewById(R.id.btnAddDossier);
+        btnAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CreateDossierActivity.class);
+            startActivity(intent);
+        });
         loadData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Rafraîchir les données au retour d'une autre activité
         loadData();
     }
 
     private void loadData() {
         List<DossierClient> dossiers = DossierRepository.load(this);
 
-        // Si l'adapter existe déjà, on met juste à jour les données
-        // Sinon on le crée
+
         adapter = new DossierAdapter(dossiers, dossier -> {
             Intent intent = new Intent(this, DossierDetailActivity.class);
             intent.putExtra("dossier", dossier);

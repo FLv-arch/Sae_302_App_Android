@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.content.Intent;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.models.DossierClient;
+import com.example.myapplication.activities.DossierDetailActivity;
 
 import java.util.List;
 
@@ -40,15 +42,22 @@ public class DossierAdapter extends RecyclerView.Adapter<DossierAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DossierClient dossier = dossiers.get(position);
+
         holder.ref.setText(dossier.getReference());
         holder.client.setText(dossier.getClient());
 
-        // MISE À JOUR DE L'ÉTAT DANS LA LISTE
+        holder.textDateDebut.setText(dossier.getDateDebut());
+
+        if (dossier.getDateFin() == null || dossier.getDateFin().isEmpty()) {
+            holder.textDateFin.setText("En cours");
+        } else {
+            holder.textDateFin.setText(dossier.getDateFin());
+        }
+
         if (dossier.getStatut() != null) {
             String statutTxt = dossier.getStatut().name().replace("_", " ");
             holder.statut.setText(statutTxt);
 
-            // Petit bonus : changer la couleur selon le statut
             switch (dossier.getStatut()) {
                 case A_TRAITER:
                     holder.statut.setTextColor(Color.parseColor("#757575")); // Gris
@@ -62,7 +71,11 @@ public class DossierAdapter extends RecyclerView.Adapter<DossierAdapter.ViewHold
             }
         }
 
-        holder.itemView.setOnClickListener(v -> listener.onClick(dossier));
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), DossierDetailActivity.class);
+            intent.putExtra("dossier", dossier); // La clé doit être "dossier"
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -70,14 +83,19 @@ public class DossierAdapter extends RecyclerView.Adapter<DossierAdapter.ViewHold
         return dossiers.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView ref, client, statut;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ViewHolder(View itemView) {
+        TextView ref, client, statut, textDateDebut, textDateFin;
+
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             ref = itemView.findViewById(R.id.textRef);
             client = itemView.findViewById(R.id.textClient);
             statut = itemView.findViewById(R.id.textStatut);
+
+            textDateDebut = itemView.findViewById(R.id.textDateDebut);
+            textDateFin = itemView.findViewById(R.id.textDateFin);
         }
     }
 }

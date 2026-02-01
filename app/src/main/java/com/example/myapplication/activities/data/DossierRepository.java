@@ -1,21 +1,11 @@
 package com.example.myapplication.activities.data;
 
 import android.content.Context;
-
-import com.example.myapplication.activities.models.DossierClient;
-import com.example.myapplication.activities.models.StatutDossier;
-
-package com.example.myapplication.activities.data;
-
-import android.content.Context;
 import android.util.Log;
-
 import com.example.myapplication.activities.models.DossierClient;
 import com.example.myapplication.activities.models.StatutDossier;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,9 +22,7 @@ public class DossierRepository {
     private static List<DossierClient> cachedDossiers = null;
 
     public static List<DossierClient> load(Context context) {
-        if (cachedDossiers != null) {
-            return cachedDossiers;
-        }
+        if (cachedDossiers != null) return cachedDossiers;
 
         List<DossierClient> dossiers = new ArrayList<>();
         File file = new File(context.getFilesDir(), FILE_NAME);
@@ -44,7 +32,14 @@ public class DossierRepository {
             if (file.exists()) {
                 is = new FileInputStream(file);
             } else {
-                is = context.getAssets().open("dossiers.json");
+                // Si le fichier n'existe pas encore, on tente de lire l'original dans assets
+                try {
+                    is = context.getAssets().open("dossiers.json");
+                } catch (Exception e) {
+                    // Si pas de fichier dans assets non plus, on part sur une liste vide
+                    cachedDossiers = new ArrayList<>();
+                    return cachedDossiers;
+                }
             }
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -61,37 +56,36 @@ public class DossierRepository {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
 
+                // Correction ici : On récupère aussi les dates pour le constructeur
                 DossierClient dossier = new DossierClient(
                         obj.getString("reference"),
                         obj.getString("client"),
-                        obj.getString("description"),
-                        StatutDossier.valueOf(obj.getString("statut"))
+                        obj.optString("description", ""),
+                        StatutDossier.valueOf(obj.getString("statut")),
+                        obj.optString("dateDebut", ""),
+                        obj.optString("dateFin", "")
                 );
-
-                // Recharger les logs si présents
-                if (obj.has("logs")) {
-                    JSONArray logsJson = obj.getJSONArray("logs");
-                    for (int j = 0; j < logsJson.length(); j++) {
-                        // Note: setStatut ajoute déjà un log, ici on pourrait juste peupler la liste initiale
-                        // mais pour simplifier on garde la logique de la classe DossierClient
-                    }
-                }
                 dossiers.add(dossier);
             }
-
             cachedDossiers = dossiers;
-
         } catch (Exception e) {
             Log.e("DossierRepository", "Error loading dossiers", e);
+            cachedDossiers = new ArrayList<>();
         }
-
-        return dossiers;
+        return cachedDossiers;
     }
 
-    public static void updateDossier(Context context, DossierClient updatedDossier) {
+    // AJOUT DE LA MÉTHODE MANQUANTE POUR CreateDossierActivity
+    public static void addDossier(Context context, DossierClient newDossier) {
         if (cachedDossiers == null) {
             load(context);
         }
+        cachedDossiers.add(0, newDossier); // Ajouter en haut de liste
+        saveAll(context); // Sauvegarder immédiatement dans le JSON
+    }
+
+    public static void updateDossier(Context context, DossierClient updatedDossier) {
+        if (cachedDossiers == null) load(context);
 
         for (int i = 0; i < cachedDossiers.size(); i++) {
             if (cachedDossiers.get(i).getReference().equals(updatedDossier.getReference())) {
@@ -115,25 +109,18 @@ public class DossierRepository {
                 obj.put("client", d.getClient());
                 obj.put("description", d.getDescription());
                 obj.put("statut", d.getStatut().name());
-
-                JSONArray logs = new JSONArray();
-                for (String log : d.getLogs()) {
-                    logs.put(log);
-                }
-                obj.put("logs", logs);
-
+                obj.put("dateDebut", d.getDateDebut());
+                obj.put("dateFin", d.getDateFin());
                 array.put(obj);
             }
 
             root.put("dossiers", array);
 
-            File file = new File(context.getFilesDir(), FILE_NAME);
-            FileOutputStream fos = new FileOutputStream(file);
+            FileOutputStream fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             writer.write(root.toString());
             writer.close();
             fos.close();
-
         } catch (Exception e) {
             Log.e("DossierRepository", "Error saving dossiers", e);
         }

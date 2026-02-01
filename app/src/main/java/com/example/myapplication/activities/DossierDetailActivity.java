@@ -16,6 +16,8 @@ public class DossierDetailActivity extends AppCompatActivity {
     private static final int REQUEST_WORKFLOW = 1001;
     private DossierClient dossier;
     private TextView textStatut;
+    private TextView textDateDebut;
+    private TextView textDateFin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,17 @@ public class DossierDetailActivity extends AppCompatActivity {
         textStatut = findViewById(R.id.textStatut);
         textStatut.setText(dossier.getStatut().name());
 
+        textDateDebut = findViewById(R.id.textDateDebut);
+        textDateFin = findViewById(R.id.textDateFin);
+
+        textDateDebut.setText("Début : " + dossier.getDateDebut());
+
+        if (dossier.getDateFin() == null || dossier.getDateFin().isEmpty()) {
+            textDateFin.setText("Fin : En cours");
+        } else {
+            textDateFin.setText("Fin : " + dossier.getDateFin());
+        }
+
         MaterialButton btn = findViewById(R.id.btnWorkflow);
         btn.setOnClickListener(v -> {
             Intent intent = new Intent(this, WorkflowActivity.class);
@@ -48,12 +61,13 @@ public class DossierDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_WORKFLOW && resultCode == RESULT_OK && data != null) {
-            // Récupérer le dossier mis à jour
             DossierClient updatedDossier = (DossierClient) data.getSerializableExtra("dossier_mis_a_jour");
             if (updatedDossier != null) {
                 this.dossier = updatedDossier;
-                // Mettre à jour l'UI
                 textStatut.setText(dossier.getStatut().name());
+                textDateDebut.setText("Début : " + dossier.getDateDebut());
+                textDateFin.setText(dossier.getDateFin() == null || dossier.getDateFin().isEmpty() ? "Fin : En cours" : "Fin : " + dossier.getDateFin());
             }
         }
     }
+}
