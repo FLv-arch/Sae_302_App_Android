@@ -1,6 +1,8 @@
 package com.example.myapplication.activities;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -17,7 +19,7 @@ public class WorkflowActivity extends AppCompatActivity {
     private DossierClient dossier;
     private View stateATraiter, stateEnCours, stateTermine;
     private MaterialButton btnATraiter, btnEnCours, btnTermine;
-    private FloatingActionButton btnHome; // Ajout
+    private FloatingActionButton btnHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class WorkflowActivity extends AppCompatActivity {
         btnATraiter = findViewById(R.id.btnATraiter);
         btnEnCours = findViewById(R.id.btnEnCours);
         btnTermine = findViewById(R.id.btnTermine);
-        btnHome = findViewById(R.id.btnHome); // Ajout
+        btnHome = findViewById(R.id.btnHome);
     }
 
     private void initActions() {
@@ -76,32 +78,54 @@ public class WorkflowActivity extends AppCompatActivity {
         resetUI();
 
         if (dossier.getStatut() == null) return;
+        
+        int colorActive = Color.parseColor("#FFCC99");
+        int colorDarkBlue = Color.parseColor("#1A237E");
+
         switch (dossier.getStatut()) {
             case A_TRAITER:
-                stateATraiter.setBackgroundResource(R.drawable.bg_state_active);
-                stateATraiter.setAlpha(1.0f); // Bien visible
+                highlightState(stateATraiter, btnATraiter, colorActive, colorDarkBlue);
                 break;
 
             case EN_COURS:
-                stateEnCours.setBackgroundResource(R.drawable.bg_state_active);
-                stateEnCours.setAlpha(1.0f);
+                highlightState(stateEnCours, btnEnCours, colorActive, colorDarkBlue);
                 break;
 
             case TERMINE:
-                stateTermine.setBackgroundResource(R.drawable.bg_state_active);
-                stateTermine.setAlpha(1.0f);
+                highlightState(stateTermine, btnTermine, colorActive, colorDarkBlue);
                 break;
         }
     }
 
+    private void highlightState(View dot, MaterialButton button, int colorActive, int colorText) {
+        dot.setBackgroundTintList(ColorStateList.valueOf(colorActive));
+        dot.setAlpha(1.0f);
+
+        button.setBackgroundTintList(ColorStateList.valueOf(colorActive));
+        button.setTextColor(colorText);
+        button.setStrokeWidth(0);
+    }
+
     private void resetUI() {
-        stateATraiter.setBackgroundResource(R.drawable.bg_state_inactive);
+        int colorInactiveDot = Color.parseColor("#80FFFFFF");
+        int colorWhite = Color.WHITE;
+        
+        stateATraiter.setBackgroundTintList(ColorStateList.valueOf(colorInactiveDot));
         stateATraiter.setAlpha(0.5f);
-
-        stateEnCours.setBackgroundResource(R.drawable.bg_state_inactive);
+        stateEnCours.setBackgroundTintList(ColorStateList.valueOf(colorInactiveDot));
         stateEnCours.setAlpha(0.5f);
-
-        stateTermine.setBackgroundResource(R.drawable.bg_state_inactive);
+        stateTermine.setBackgroundTintList(ColorStateList.valueOf(colorInactiveDot));
         stateTermine.setAlpha(0.5f);
+
+        resetButtonStyle(btnATraiter, colorWhite);
+        resetButtonStyle(btnEnCours, colorWhite);
+        resetButtonStyle(btnTermine, colorWhite);
+    }
+
+    private void resetButtonStyle(MaterialButton button, int color) {
+        button.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        button.setStrokeColor(ColorStateList.valueOf(color));
+        button.setStrokeWidth(3);
+        button.setTextColor(color);
     }
 }

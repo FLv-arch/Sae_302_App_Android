@@ -32,11 +32,9 @@ public class DossierRepository {
             if (file.exists()) {
                 is = new FileInputStream(file);
             } else {
-                // Si le fichier n'existe pas encore, on tente de lire l'original dans assets
                 try {
                     is = context.getAssets().open("dossiers.json");
                 } catch (Exception e) {
-                    // Si pas de fichier dans assets non plus, on part sur une liste vide
                     cachedDossiers = new ArrayList<>();
                     return cachedDossiers;
                 }
@@ -56,15 +54,25 @@ public class DossierRepository {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
 
-                // Correction ici : On récupère aussi les dates pour le constructeur
                 DossierClient dossier = new DossierClient(
                         obj.getString("reference"),
                         obj.getString("client"),
                         obj.optString("description", ""),
                         StatutDossier.valueOf(obj.getString("statut")),
-                        obj.optString("dateDebut", ""),
-                        obj.optString("dateFin", "")
+                        obj.optString("date_debut", obj.optString("dateDebut", "")),
+                        obj.optString("date_fin", obj.optString("dateFin", ""))
                 );
+                
+                // Chargement des LOGS
+                if (obj.has("logs")) {
+                    JSONArray logsArray = obj.getJSONArray("logs");
+                    List<String> logsList = new ArrayList<>();
+                    for (int j = 0; j < logsArray.length(); j++) {
+                        logsList.add(logsArray.getString(j));
+                    }
+                    dossier.setLogs(logsList);
+                }
+                
                 dossiers.add(dossier);
             }
             cachedDossiers = dossiers;
@@ -75,13 +83,10 @@ public class DossierRepository {
         return cachedDossiers;
     }
 
-    // AJOUT DE LA MÉTHODE MANQUANTE POUR CreateDossierActivity
     public static void addDossier(Context context, DossierClient newDossier) {
-        if (cachedDossiers == null) {
-            load(context);
-        }
-        cachedDossiers.add(0, newDossier); // Ajouter en haut de liste
-        saveAll(context); // Sauvegarder immédiatement dans le JSON
+        if (cachedDossiers == null) load(context);
+        cachedDossiers.add(0, newDossier);
+        saveAll(context);
     }
 
     public static void updateDossier(Context context, DossierClient updatedDossier) {
@@ -109,8 +114,16 @@ public class DossierRepository {
                 obj.put("client", d.getClient());
                 obj.put("description", d.getDescription());
                 obj.put("statut", d.getStatut().name());
-                obj.put("dateDebut", d.getDateDebut());
-                obj.put("dateFin", d.getDateFin());
+                obj.put("date_debut", d.getDateDebut());
+                obj.put("date_fin", d.getDateFin());
+                
+                // Sauvegarde des LOGS
+                JSONArray logsArray = new JSONArray();
+                for (String log : d.getLogs()) {
+                    logsArray.put(log);
+                }
+                obj.put("logs", logsArray);
+                
                 array.put(obj);
             }
 

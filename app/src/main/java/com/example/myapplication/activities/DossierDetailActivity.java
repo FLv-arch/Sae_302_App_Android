@@ -3,10 +3,8 @@ package com.example.myapplication.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myapplication.R;
 import com.example.myapplication.activities.models.DossierClient;
 import com.google.android.material.button.MaterialButton;
@@ -15,9 +13,7 @@ public class DossierDetailActivity extends AppCompatActivity {
 
     private static final int REQUEST_WORKFLOW = 1001;
     private DossierClient dossier;
-    private TextView textStatut;
-    private TextView textDateDebut;
-    private TextView textDateFin;
+    private TextView textStatut, textLogs, textDateDebut, textDateFin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,23 +27,8 @@ public class DossierDetailActivity extends AppCompatActivity {
             return;
         }
 
-        ((TextView) findViewById(R.id.textReference)).setText(dossier.getReference());
-        ((TextView) findViewById(R.id.textClient)).setText(dossier.getClient());
-        ((TextView) findViewById(R.id.textDescription)).setText(dossier.getDescription());
-
-        textStatut = findViewById(R.id.textStatut);
-        textStatut.setText(dossier.getStatut().name());
-
-        textDateDebut = findViewById(R.id.textDateDebut);
-        textDateFin = findViewById(R.id.textDateFin);
-
-        textDateDebut.setText("Début : " + dossier.getDateDebut());
-
-        if (dossier.getDateFin() == null || dossier.getDateFin().isEmpty()) {
-            textDateFin.setText("Fin : En cours");
-        } else {
-            textDateFin.setText("Fin : " + dossier.getDateFin());
-        }
+        initViews();
+        displayData();
 
         MaterialButton btn = findViewById(R.id.btnWorkflow);
         btn.setOnClickListener(v -> {
@@ -57,6 +38,30 @@ public class DossierDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void initViews() {
+        textStatut = findViewById(R.id.textStatut);
+        textLogs = findViewById(R.id.textLogs);
+        textDateDebut = findViewById(R.id.textDateDebut);
+        textDateFin = findViewById(R.id.textDateFin);
+    }
+
+    private void displayData() {
+        ((TextView) findViewById(R.id.textReference)).setText("Dossier #" + dossier.getReference());
+        ((TextView) findViewById(R.id.textClient)).setText(dossier.getClient());
+        ((TextView) findViewById(R.id.textDescription)).setText(dossier.getDescription());
+        
+        textStatut.setText(dossier.getStatut().name());
+        textDateDebut.setText("Date de début : " + (dossier.getDateDebut().isEmpty() ? "--" : dossier.getDateDebut()));
+        textDateFin.setText("Date de fin : " + (dossier.getDateFin().isEmpty() ? "--" : dossier.getDateFin()));
+
+        // Affichage des logs
+        StringBuilder sb = new StringBuilder();
+        for (String log : dossier.getLogs()) {
+            sb.append("- ").append(log).append("\n");
+        }
+        textLogs.setText(sb.toString());
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -64,9 +69,7 @@ public class DossierDetailActivity extends AppCompatActivity {
             DossierClient updatedDossier = (DossierClient) data.getSerializableExtra("dossier_mis_a_jour");
             if (updatedDossier != null) {
                 this.dossier = updatedDossier;
-                textStatut.setText(dossier.getStatut().name());
-                textDateDebut.setText("Début : " + dossier.getDateDebut());
-                textDateFin.setText(dossier.getDateFin() == null || dossier.getDateFin().isEmpty() ? "Fin : En cours" : "Fin : " + dossier.getDateFin());
+                displayData(); // Rafraîchir tout l'affichage
             }
         }
     }
