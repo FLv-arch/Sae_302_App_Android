@@ -14,7 +14,7 @@ import java.util.Locale;
 import com.example.myapplication.activities.models.DossierClient;
 import com.example.myapplication.activities.models.StatutDossier;
 import com.example.myapplication.activities.data.DossierRepository;
-import com.example.myapplication.R; // Remplace par ton vrai nom de package
+import com.example.myapplication.R;
 
 public class CreateDossierActivity extends AppCompatActivity {
 
