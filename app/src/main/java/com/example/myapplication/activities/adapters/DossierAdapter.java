@@ -73,7 +73,7 @@ public class DossierAdapter extends RecyclerView.Adapter<DossierAdapter.ViewHold
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), DossierDetailActivity.class);
-            intent.putExtra("dossier", dossier); // La clé doit être "dossier"
+            intent.putExtra("dossier", dossier);
             v.getContext().startActivity(intent);
         });
     }
